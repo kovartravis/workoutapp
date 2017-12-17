@@ -1,0 +1,17 @@
+App{
+  height: 100vh;
+  width: 100vw;
+}
+
+.App-logo {
+  display: block;
+  margin: auto;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.App-header {
+  background-color:#50C878;
+  padding: 20px;
+  color: white;
+}
