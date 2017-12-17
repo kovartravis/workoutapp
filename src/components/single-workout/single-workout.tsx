@@ -1,8 +1,18 @@
 import * as React from 'react';
 import './single-workout.style.css';
+import {
+  Table,
+  TableBody,
+  TableHeader,
+  TableHeaderColumn,
+  TableRow,
+  TableRowColumn,
+} from 'material-ui/Table';
+import ExerciseList from '../exercise-list/exercise-list'
+
 
 interface State{
-  exercise: string;
+
 }
 
 interface Props {
@@ -13,24 +23,30 @@ class SingleWorkout extends React.Component<Props, State> {
 
   constructor(props : Props) {
     super(props);
-    this.state = {
-      exercise: "squat"
-    }
-    this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(event : React.FormEvent<any>){
-    console.log(event.currentTarget.value)
-  }
-  
   render() {
     return (
-      <div className="workoutHolder">
-        <select className="exerciseSelector" defaultValue={this.state.exercise} onChange={this.handleChange}>
-          <option value="squat">Squat</option>
-          <option value="benchpress">Bench Press</option>
-        </select>
-      </div>
+      <Table>
+        <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+          <TableRow>
+            <TableHeaderColumn>Day 1</TableHeaderColumn>
+            <TableHeaderColumn>Day 2</TableHeaderColumn>
+            <TableHeaderColumn>Day 3</TableHeaderColumn>
+          </TableRow>
+        </TableHeader>
+        <TableBody displayRowCheckbox={false}>
+            <TableRowColumn>
+              <ExerciseList />
+            </TableRowColumn>
+            <TableRowColumn>
+              <ExerciseList />
+            </TableRowColumn>
+            <TableRowColumn>
+              <ExerciseList />
+            </TableRowColumn>
+        </TableBody>
+      </Table>
     );
   }
 }

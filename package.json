@@ -3,9 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/material-ui": "^0.18.5",
+    "@types/react-tap-event-plugin": "^0.0.30",
+    "grunt": "^1.0.1",
+    "grunt-contrib-less": "^1.4.1",
+    "grunt-contrib-watch": "^1.0.0",
+    "jquery": "^3.2.1",
+    "less-plugin-autoprefix": "^1.5.1",
+    "less-plugin-clean-css": "^1.5.1",
+    "material-ui": "^0.20.0",
+    "mdbootstrap": "4.3.2",
+    "mdbreact": "^4.0.0",
+    "muicss": "^0.9.35",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "react-scripts-ts": "2.8.0"
+    "react-scripts-ts": "2.8.0",
+    "react-tap-event-plugin": "^3.0.2"
   },
   "scripts": {
     "start": "react-scripts-ts start",

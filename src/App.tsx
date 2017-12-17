@@ -1,6 +1,7 @@
 import * as React from 'react';
 import './App.css';
 import SingleWorkout from './components/single-workout/single-workout'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 
 const logo = require('./logo.png');
@@ -21,12 +22,14 @@ class App extends React.Component<Props, State> {
 
   render() {
     return (
+      <MuiThemeProvider>
       <div className="App">
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
         </div>
         <SingleWorkout />
       </div>
+      </MuiThemeProvider>
     );
   }
 }

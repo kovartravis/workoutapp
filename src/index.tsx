@@ -3,6 +3,10 @@ import * as ReactDOM from 'react-dom';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
+import * as injectTapEventPluginExport from 'react-tap-event-plugin';
+const injectTapEventPlugin = (injectTapEventPluginExport as any).default;
+injectTapEventPlugin
+// injectTapEventPlugin()
 
 ReactDOM.render(
   <App />,
