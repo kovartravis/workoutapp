@@ -60,21 +60,25 @@ class ExerciseSelector extends React.Component<Props, State> {
   }
 
   createSubtitleString(){
-      return this.state.sets + 'x' + this.state.reps + '@' + this.state.weight
+      return this.state.sets + 'x' + this.state.reps + '@' + this.state.weight + 'lbs'
+  }
+
+  componentDidMount(){
+      console.log(this.refs.card)
   }
 
   render() {
     return (
-      <Card className="exerciseHolder">
+      <Card ref="card">
         <CardHeader title={this.createTitleString()} subtitle={this.createSubtitleString()} actAsExpander={true} showExpandableButton={true}/>
         <CardText expandable={true}>
-          <SelectField className="liftSelector" floatingLabelText="Lift" value={this.state.lift} onChange={this.handleSelectChange}>
+          <SelectField floatingLabelText="Lift" value={this.state.lift} onChange={this.handleSelectChange}>
             <MenuItem value={0} primaryText="Squat"/>
             <MenuItem value={1} primaryText="Bench Press"/>
-          </SelectField>
-            <TextField id="sets" className="setsInput" value={this.state.sets} floatingLabelText="Sets" type="number" onChange={this.handleInputChange} />
-            <TextField id="reps" className="repsInput" value={this.state.reps} floatingLabelText="Reps" type="number" onChange={this.handleInputChange} />
-            <TextField id="weight" className="weightInput" value={this.state.weight} floatingLabelText="Weight" type="number" onChange={this.handleInputChange} />
+          </SelectField><br/>
+            <TextField id="sets" style={{width: 100}} value={this.state.sets} floatingLabelText="Sets" type="number" onChange={this.handleInputChange} />
+            <TextField id="reps" style={{width: 100}} value={this.state.reps} floatingLabelText="Reps" type="number" onChange={this.handleInputChange} />
+            <TextField id="weight" style={{width: 100}} value={this.state.weight} floatingLabelText="Weight" type="number" onChange={this.handleInputChange} /><br/>
             <TextField id="notes" className="notesInput" value={this.state.notes} floatingLabelText="Notes" type="text"  onChange={this.handleInputChange} />
         </CardText>
       </Card>

@@ -36,13 +36,13 @@ class SingleWorkout extends React.Component<Props, State> {
           </TableRow>
         </TableHeader>
         <TableBody displayRowCheckbox={false}>
-            <TableRowColumn>
+            <TableRowColumn className="tablecolumn">
               <ExerciseList />
             </TableRowColumn>
-            <TableRowColumn>
+            <TableRowColumn className="tablecolumn">
               <ExerciseList />
             </TableRowColumn>
-            <TableRowColumn>
+            <TableRowColumn className="tablecolumn">
               <ExerciseList />
             </TableRowColumn>
         </TableBody>

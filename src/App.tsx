@@ -2,7 +2,7 @@ import * as React from 'react';
 import './App.css';
 import SingleWorkout from './components/single-workout/single-workout'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
+import 'typeface-roboto'
 
 const logo = require('./logo.png');
 
@@ -19,7 +19,7 @@ class App extends React.Component<Props, State> {
   constructor(props : Props) {
     super(props);
   }
-
+  
   render() {
     return (
       <MuiThemeProvider>
