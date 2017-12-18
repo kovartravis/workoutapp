@@ -55,16 +55,13 @@ class ExerciseSelector extends React.Component<Props, State> {
       switch(this.state.lift){
           case 0: return 'Squat'
           case 1: return 'Bench Press'
+          case 2: return 'Deadlift'
           default: return 'Oh no'
       }
   }
 
   createSubtitleString(){
       return this.state.sets + 'x' + this.state.reps + '@' + this.state.weight + 'lbs'
-  }
-
-  componentDidMount(){
-      console.log(this.refs.card)
   }
 
   render() {
@@ -75,6 +72,7 @@ class ExerciseSelector extends React.Component<Props, State> {
           <SelectField floatingLabelText="Lift" value={this.state.lift} onChange={this.handleSelectChange}>
             <MenuItem value={0} primaryText="Squat"/>
             <MenuItem value={1} primaryText="Bench Press"/>
+            <MenuItem value={2} primaryText="Deadlift"/>
           </SelectField><br/>
             <TextField id="sets" style={{width: 100}} value={this.state.sets} floatingLabelText="Sets" type="number" onChange={this.handleInputChange} />
             <TextField id="reps" style={{width: 100}} value={this.state.reps} floatingLabelText="Reps" type="number" onChange={this.handleInputChange} />

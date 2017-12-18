@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './App.css';
-import SingleWorkout from './components/single-workout/single-workout'
+import FullProgram from './components/full-program/full-program'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import 'typeface-roboto'
 
@@ -27,7 +27,7 @@ class App extends React.Component<Props, State> {
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
         </div>
-        <SingleWorkout />
+        <FullProgram />
       </div>
       </MuiThemeProvider>
     );
