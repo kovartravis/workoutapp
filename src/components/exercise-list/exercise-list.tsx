@@ -16,10 +16,20 @@ interface ExerciseList{
 
 interface State{
     exerciseList: Array<JSX.Element>
+    children: Object
+}
+
+interface childState{
+  lift: number;
+  sets: number;
+  reps: number;
+  weight: number;
+  notes: string;
 }
 
 interface Props {
-
+  id: string
+  onStateChange: any
 }
 
 class ExerciseList extends React.Component<Props, State> {
@@ -29,20 +39,29 @@ class ExerciseList extends React.Component<Props, State> {
     this.key = -1;
     this.addToExerciseList = this.addToExerciseList.bind(this)
     this.getKey = this.getKey.bind(this)
+    this.onChildStateChange = this.onChildStateChange.bind(this)
 
     let mykey = this.getKey()
     this.state = {
         exerciseList: [<div key={mykey}><IconButton onClick={(event) => this.removeFromExerciseList(event, mykey)}>
                                                <ContentClear />
-                                             </IconButton><ExerciseSelector /></div>]
+                                             </IconButton><ExerciseSelector id={mykey} onStateChange={this.onChildStateChange}/></div>],
+        children: {}
+                
     }
   }
 
   addToExerciseList(){
     let mykey = this.getKey()
     this.setState({exerciseList: this.state.exerciseList.concat(<div key={mykey}><IconButton onClick={(event) => this.removeFromExerciseList(event, mykey)}>
-                                                                                        <ContentClear />
-                                                                                     </IconButton><ExerciseSelector /></div>)})
+                                                <ContentClear /></IconButton><ExerciseSelector id={mykey} onStateChange={this.onChildStateChange}/></div>)})
+    
+  }
+
+  onChildStateChange(childstate: childState, id: string){
+    this.state.children[id] = childstate
+    this.setState({children: this.state.children}, () =>
+    this.props.onStateChange(this.state.children, this.props.id))
   }
 
   removeFromExerciseList(event: React.FormEvent<any>, key: string){

@@ -21,10 +21,16 @@ interface SingleWeek{
 interface State{
   headers: Array<JSX.Element>
   workoutList: Array<JSX.Element>
+  children: Object
+}
+
+interface childState{
+  children: Object
 }
 
 interface Props {
-
+  id: string
+  onStateChange: any
 }
 
 class SingleWeek extends React.Component<Props, State> {
@@ -37,19 +43,23 @@ class SingleWeek extends React.Component<Props, State> {
 
     this.addToWorkoutList = this.addToWorkoutList.bind(this);
     this.removeFromWorkoutList = this.removeFromWorkoutList.bind(this);
-    this.getKey = this.getKey.bind(this)
+    this.getKey = this.getKey.bind(this);
+    this.onChildStateChange = this.onChildStateChange.bind(this)
 
     const mykey = this.getKey();
     this.state = {
       headers: [],
-      workoutList: []
+      workoutList: [],
+      children: {}
     }
     this.state = {headers: this.state.headers.concat(<TableHeaderColumn key={this.state.headers.length.toString()} columnNumber={this.state.headers.length}>
                                                         {this.headerStrings[this.state.headers.length]} 
                                                         <IconButton onClick={(event) => this.removeFromWorkoutList(event, mykey)}>
                                                           <ContentClear />
                                                         </IconButton></TableHeaderColumn>),
-                   workoutList: this.state.workoutList.concat(<TableRowColumn key={mykey} className="tablecolumn"><ExerciseList /></TableRowColumn>) }
+                   workoutList: this.state.workoutList.concat(<TableRowColumn key={mykey} className="tablecolumn">
+                                    <ExerciseList id={mykey} onStateChange={this.onChildStateChange}/></TableRowColumn>),
+                    children: {} }
 
 
   }
@@ -61,7 +71,14 @@ class SingleWeek extends React.Component<Props, State> {
                                                                 <IconButton onClick={(event) => this.removeFromWorkoutList(event, mykey)}>
                                                                   <ContentClear />
                                                                 </IconButton></TableHeaderColumn>),
-                           workoutList: this.state.workoutList.concat(<TableRowColumn key={mykey} className="tablecolumn"><ExerciseList /></TableRowColumn>) });
+                           workoutList: this.state.workoutList.concat(<TableRowColumn key={mykey} className="tablecolumn">
+                                                 <ExerciseList id={mykey} onStateChange={this.onChildStateChange}/></TableRowColumn>) });
+  }
+
+  onChildStateChange(childstate: childState, id: string){
+    this.state.children[id] = childstate
+    this.setState({children: this.state.children}, ()=>
+    this.props.onStateChange(this.state.children, this.props.id))
   }
 
   removeFromWorkoutList(event: React.FormEvent<any>, key: string){

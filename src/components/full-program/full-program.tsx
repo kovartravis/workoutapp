@@ -12,7 +12,11 @@ interface FullProgram{
 
 interface State{
     weekList: Array<JSX.Element>
-    weekContent: Array<JSX.Element>
+    children: Object
+}
+
+interface ChildState{
+  children: Object
 }
 
 interface Props {
@@ -23,64 +27,47 @@ class FullProgram extends React.Component<Props, State> {
 
   constructor(props : Props) {
     super(props);
+
     this.getKey = this.getKey.bind(this)
-    this.addToWeekList = this.addToWeekList.bind(this)
-    this.getMyContent = this.getMyContent.bind(this)
-    this.key = -1
+    this.addAWeek = this.addAWeek.bind(this)
+    this.onChildStateChange = this.onChildStateChange.bind(this)
+    this.key = 0
 
-    let mykey = this.getKey()
     this.state = {
-      weekList: [],
-      weekContent: [<div key={mykey}><IconButton onClick={(event) => this.removeFromWeekList(event, mykey)}>
-        <ContentClear /></IconButton><SingleWeek/></div>]
-    }
-    this.state = { weekList: [<Tab label={"Week 1"} key={mykey}>
-                    {this.getMyContent(mykey)}
-                 </Tab>],
-                   weekContent: this.state.weekContent
+      weekList: [<Tab label={"Week 1"}>
+                  <IconButton >
+                    <ContentClear />
+                  </IconButton>
+                  <SingleWeek id="0" onStateChange={this.onChildStateChange}/>
+                  </Tab>],
+      children: {}
     }
   }
 
-  getMyContent(n: string){
-    let i = parseInt(n)
-    return this.state.weekContent[i]
+  onChildStateChange(childstate: ChildState, id: string){
+    this.state.children[id] = childstate
+    this.setState({children: this.state.children}, ()=>
+    console.log(this.state.children))
   }
 
-  addToWeekList(){
-      let mykey = this.getKey()
-      this.setState({weekContent: this.state.weekContent.concat(<div key={mykey}><IconButton onClick={(event) => this.removeFromWeekList(event, mykey)}>
-                                                              <ContentClear /></IconButton><SingleWeek/></div>)}, ()=>
-      this.setState({weekList: this.state.weekList.concat(<Tab label={"Week " + (this.state.weekList.length + 1)} key={mykey}>
-                                                           {this.getMyContent(mykey)}
-                                                          </Tab>)}))
-  }
-
-  removeFromWeekList(event: React.FormEvent<any>, key: string){
-    let k = parseInt(key)
-    
-    const j = this.state.weekList.find( a => {if(a.key === k.toString()){return true;} else return false; })
-    let index = 0
-    if(j !== undefined){
-      index = this.state.weekList.indexOf(j);
-    }
-
-    this.state.weekList.splice(index, 1)
-    this.setState({weekList: this.state.weekList.map( (a, i) =>{if(i < index) return a; else return React.cloneElement(a, {label: "Week " + (i + 1), 
-                                                                         //children: this.getMyContent(a.key?a.key.toString():'broke')
-                                                                         })})});
+  addAWeek(){
+    let mykey = this.getKey()
+    this.setState({weekList: this.state.weekList.concat(<Tab key={mykey} label={"Week " + (this.state.weekList.length + 1)}><IconButton ><ContentClear /></IconButton>
+                                                        <SingleWeek id={mykey} onStateChange={this.onChildStateChange}/></Tab>)})
   }
 
   getKey(){
-    this.key = this.key + 1;
-    return this.key.toString();
+    this.key = this.key + 1
+    return this.key.toString()
   }
+
   
   render() {
     return (
         <Tabs>
           {this.state.weekList}
           <div className="buttonHolder">
-            <FlatButton label="Add a Week" onClick={this.addToWeekList} />
+            <FlatButton label="Add a Week" onClick={this.addAWeek}/>
           </div>
         </Tabs>
     );

@@ -14,7 +14,8 @@ interface State {
 }
 
 interface Props {
-
+    id: string
+    onStateChange: any
 }
 
 class ExerciseSelector extends React.Component<Props, State> {
@@ -35,22 +36,27 @@ class ExerciseSelector extends React.Component<Props, State> {
   }
 
   passInfoUp(){
-      return this.state.lift
+      return this
   }
 
   handleSelectChange(event: React.FormEvent<any>, index: number) {
-      this.setState({lift: index})
+      this.setState({lift: index}, ()=>
+      this.props.onStateChange(this.state, this.props.id));
   }
 
   handleInputChange(event: React.FormEvent<any>){
       switch(event.currentTarget.id){
-          case 'sets': this.setState({sets: event.currentTarget.value});
+          case 'sets': this.setState({sets: event.currentTarget.value}, ()=> 
+                       this.props.onStateChange(this.state, this.props.id));
                        break;
-          case 'reps': this.setState({reps: event.currentTarget.value});
+          case 'reps': this.setState({reps: event.currentTarget.value}, () =>
+                       this.props.onStateChange(this.state, this.props.id));
                        break;
-          case 'weight': this.setState({weight: event.currentTarget.value});
+          case 'weight': this.setState({weight: event.currentTarget.value}, ()=>
+                         this.props.onStateChange(this.state, this.props.id));
                          break;
-          case 'notes': this.setState({notes: event.currentTarget.value})
+          case 'notes': this.setState({notes: event.currentTarget.value}, ()=>
+                        this.props.onStateChange(this.state, this.props.id));
                         break;
           default: console.log('dont be here');
       }
