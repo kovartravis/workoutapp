@@ -31,6 +31,11 @@ class ExerciseSelector extends React.Component<Props, State> {
 
     this.handleSelectChange = this.handleSelectChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.passInfoUp = this.passInfoUp.bind(this)
+  }
+
+  passInfoUp(){
+      return this.state.lift
   }
 
   handleSelectChange(event: React.FormEvent<any>, index: number) {
