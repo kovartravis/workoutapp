@@ -16,19 +16,25 @@ interface State {
 interface Props {
     id: string
     onStateChange: any
+    injectedState?: State
 }
 
 class ExerciseSelector extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    this.state = {
-        lift: 0,
-        sets: 0,
-        reps: 0,
-        weight: 0,
-        notes: ''
-    };
+    if(this.props.injectedState){
+        this.state = this.props.injectedState;
+    }else{
+        this.state = {
+            lift: 0,
+            sets: 0,
+            reps: 0,
+            weight: 0,
+            notes: ''
+        };
+    }
+
 
     this.handleSelectChange = this.handleSelectChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);

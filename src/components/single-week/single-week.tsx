@@ -24,6 +24,14 @@ interface State{
   children: Object
 }
 
+interface selectorState{
+  lift: number;
+  sets: number;
+  reps: number;
+  weight: number;
+  notes: string;
+}
+
 interface childState{
   children: Object
 }
@@ -31,6 +39,7 @@ interface childState{
 interface Props {
   id: string
   onStateChange: any
+  injectedState?: Array<Array<selectorState>>
 }
 
 class SingleWeek extends React.Component<Props, State> {
@@ -46,22 +55,38 @@ class SingleWeek extends React.Component<Props, State> {
     this.getKey = this.getKey.bind(this);
     this.onChildStateChange = this.onChildStateChange.bind(this)
 
-    const mykey = this.getKey();
+    let headers: Array<JSX.Element> = []
+    let workoutList: Array<JSX.Element> = []
+    let mykey = ""
+
+    if(this.props.injectedState){
+      for(let i = 0; i < Object.keys(this.props.injectedState).length; i++){
+        console.log(this.props.injectedState[i])
+        mykey = this.getKey();
+        headers.push(<TableHeaderColumn key={headers.length.toString()} columnNumber={headers.length}>
+        {this.headerStrings[headers.length]} 
+        <IconButton onClick={(event) => this.removeFromWorkoutList(event, mykey)}>
+          <ContentClear />
+        </IconButton></TableHeaderColumn>);
+        workoutList.push(<TableRowColumn key={mykey} className="tablecolumn">
+        <ExerciseList id={mykey} onStateChange={this.onChildStateChange} injectedState={this.props.injectedState[i]}/></TableRowColumn>)
+      }
+    }else{
+      mykey = this.getKey();
+      headers.push(<TableHeaderColumn key={headers.length.toString()} columnNumber={headers.length}>
+                                                          {this.headerStrings[headers.length]} 
+                                                          <IconButton onClick={(event) => this.removeFromWorkoutList(event, mykey)}>
+                                                            <ContentClear />
+                                                          </IconButton></TableHeaderColumn>),
+      workoutList.push(<TableRowColumn key={mykey} className="tablecolumn">
+                                      <ExerciseList id={mykey} onStateChange={this.onChildStateChange} /></TableRowColumn>)
+    }
+
     this.state = {
-      headers: [],
-      workoutList: [],
+      headers: headers, 
+      workoutList: workoutList,
       children: {}
     }
-    this.state = {headers: this.state.headers.concat(<TableHeaderColumn key={this.state.headers.length.toString()} columnNumber={this.state.headers.length}>
-                                                        {this.headerStrings[this.state.headers.length]} 
-                                                        <IconButton onClick={(event) => this.removeFromWorkoutList(event, mykey)}>
-                                                          <ContentClear />
-                                                        </IconButton></TableHeaderColumn>),
-                   workoutList: this.state.workoutList.concat(<TableRowColumn key={mykey} className="tablecolumn">
-                                    <ExerciseList id={mykey} onStateChange={this.onChildStateChange}/></TableRowColumn>),
-                    children: {} }
-
-
   }
 
   addToWorkoutList(){

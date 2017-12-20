@@ -30,6 +30,7 @@ interface childState{
 interface Props {
   id: string
   onStateChange: any
+  injectedState?: Array<childState>
 }
 
 class ExerciseList extends React.Component<Props, State> {
@@ -41,11 +42,22 @@ class ExerciseList extends React.Component<Props, State> {
     this.getKey = this.getKey.bind(this)
     this.onChildStateChange = this.onChildStateChange.bind(this)
 
-    let mykey = this.getKey()
+    let exerciseList: Array<JSX.Element> = []
+    let mykey = ""
+    if(this.props.injectedState){
+      for(let i = 0; i < Object.keys(this.props.injectedState).length; i++){
+        mykey = this.getKey()
+        exerciseList.push((<div key={mykey}><IconButton onClick={(event) => this.removeFromExerciseList(event, mykey)}>
+                                 <ContentClear /></IconButton><ExerciseSelector id={mykey} onStateChange={this.onChildStateChange} injectedState={this.props.injectedState[i]}/></div>))
+      }
+    }else{
+      mykey = this.getKey()
+      exerciseList = [<div key={mykey}><IconButton onClick={(event) => this.removeFromExerciseList(event, mykey)}>
+                      <ContentClear /></IconButton><ExerciseSelector id={mykey} onStateChange={this.onChildStateChange}/></div>]
+    }
+
     this.state = {
-        exerciseList: [<div key={mykey}><IconButton onClick={(event) => this.removeFromExerciseList(event, mykey)}>
-                                               <ContentClear />
-                                             </IconButton><ExerciseSelector id={mykey} onStateChange={this.onChildStateChange}/></div>],
+        exerciseList: exerciseList,
         children: {}
                 
     }
