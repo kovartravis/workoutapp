@@ -9,6 +9,8 @@ import FlatButton from 'material-ui/FlatButton';
 import ExerciseSelector from '../exercise-selector/exercise-selector';
 import IconButton from 'material-ui/IconButton';
 import ContentClear from 'material-ui/svg-icons/content/clear';
+import ArrowUpward from 'material-ui/svg-icons/navigation/arrow-upward'
+import ArrowDownward from 'material-ui/svg-icons/navigation/arrow-downward'
 
 interface ExerciseList{
   key: number
@@ -41,19 +43,27 @@ class ExerciseList extends React.Component<Props, State> {
     this.addToExerciseList = this.addToExerciseList.bind(this)
     this.getKey = this.getKey.bind(this)
     this.onChildStateChange = this.onChildStateChange.bind(this)
+    this.moveContentUpward = this.moveContentUpward.bind(this)
+    this.moveContentDownward = this.moveContentDownward.bind(this)
 
     let exerciseList: Array<JSX.Element> = []
     let mykey = ""
     if(this.props.injectedState){
       for(let i = 0; i < Object.keys(this.props.injectedState).length; i++){
         mykey = this.getKey()
-        exerciseList.push((<div key={mykey}><IconButton onClick={(event) => this.removeFromExerciseList(event, mykey)}>
-                                 <ContentClear /></IconButton><ExerciseSelector id={mykey} onStateChange={this.onChildStateChange} injectedState={this.props.injectedState[i]}/></div>))
+        exerciseList.push((<div key={mykey}>
+                                 <IconButton tooltip="Remove Exercise" onClick={(event) => this.removeFromExerciseList(event, mykey)}><ContentClear /></IconButton>
+                                 <IconButton tooltip="Move Up" onClick={(event) => this.moveContentUpward(mykey)}><ArrowUpward /></IconButton>
+                                 <IconButton tooltip="Move Down" onClick={(event) => this.moveContentDownward(mykey)}><ArrowDownward /></IconButton>
+                                 <ExerciseSelector id={mykey} onStateChange={this.onChildStateChange} injectedState={this.props.injectedState[i]}/></div>))
       }
     }else{
       mykey = this.getKey()
-      exerciseList = [<div key={mykey}><IconButton onClick={(event) => this.removeFromExerciseList(event, mykey)}>
-                      <ContentClear /></IconButton><ExerciseSelector id={mykey} onStateChange={this.onChildStateChange}/></div>]
+      exerciseList = [<div key={mykey}>
+                      <IconButton tooltip="Remove Exercise" onClick={(event) => this.removeFromExerciseList(event, mykey)}><ContentClear /></IconButton>
+                      <IconButton tooltip="Move Up" onClick={(event) => this.moveContentUpward(mykey)}><ArrowUpward /></IconButton>
+                      <IconButton tooltip="Move Down" onClick={(event) => this.moveContentDownward(mykey)}><ArrowDownward /></IconButton>
+                      <ExerciseSelector id={mykey} onStateChange={this.onChildStateChange}/></div>]
     }
 
     this.state = {
@@ -65,8 +75,11 @@ class ExerciseList extends React.Component<Props, State> {
 
   addToExerciseList(){
     let mykey = this.getKey()
-    this.setState({exerciseList: this.state.exerciseList.concat(<div key={mykey}><IconButton onClick={(event) => this.removeFromExerciseList(event, mykey)}>
-                                                <ContentClear /></IconButton><ExerciseSelector id={mykey} onStateChange={this.onChildStateChange}/></div>)})
+    this.setState({exerciseList: this.state.exerciseList.concat(<div key={mykey}>
+                                                <IconButton tooltip="Remove Exercise" onClick={(event) => this.removeFromExerciseList(event, mykey)}><ContentClear /></IconButton>
+                                                <IconButton tooltip="Move Up" onClick={(event) => this.moveContentUpward(mykey)}><ArrowUpward /></IconButton>
+                                                <IconButton tooltip="Move Down" onClick={(event) => this.moveContentDownward(mykey)}><ArrowDownward /></IconButton>
+                                                <ExerciseSelector id={mykey} onStateChange={this.onChildStateChange}/></div>)})
     
   }
 
@@ -88,6 +101,42 @@ class ExerciseList extends React.Component<Props, State> {
 
     newExerciseList.splice(i, 1)
     this.setState({exerciseList: newExerciseList});
+  }
+
+  moveContentUpward(key: string){
+    const newExerciseList = this.state.exerciseList;
+    let k = parseInt(key)
+    
+    const elementGoingUp = newExerciseList.find( a => {if(a.key === k.toString())return true; else return false; })
+    let indexGoingUp = 0
+    if(elementGoingUp !== undefined){
+      indexGoingUp = newExerciseList.indexOf(elementGoingUp);
+    }
+
+    if(indexGoingUp !== 0){
+      let temp = this.state.exerciseList[indexGoingUp - 1]
+      this.state.exerciseList[indexGoingUp - 1] = this.state.exerciseList[indexGoingUp]
+      this.state.exerciseList[indexGoingUp] = temp
+      this.setState({exerciseList: this.state.exerciseList})
+    }
+  }
+
+  moveContentDownward(key: string){
+    const newExerciseList = this.state.exerciseList;
+    let k = parseInt(key)
+    
+    const elementGoingUp = newExerciseList.find( a => {if(a.key === k.toString())return true; else return false; })
+    let indexGoingUp = 0
+    if(elementGoingUp !== undefined){
+      indexGoingUp = newExerciseList.indexOf(elementGoingUp);
+    }
+
+    if(indexGoingUp !== this.addToExerciseList.length - 1){
+      let temp = this.state.exerciseList[indexGoingUp + 1]
+      this.state.exerciseList[indexGoingUp + 1] = this.state.exerciseList[indexGoingUp]
+      this.state.exerciseList[indexGoingUp] = temp
+      this.setState({exerciseList: this.state.exerciseList})
+    }
   }
 
   getKey(){

@@ -37,7 +37,7 @@ class FullProgram extends React.Component<Props, State> {
     let mykey = this.getKey()
     this.state = {
       weekList: [<Tab key={mykey} label={"Week 1"}>
-                  <IconButton onClick={(event) => this.removeAWeek(mykey)}>
+                  <IconButton tooltip="Remove Week" tooltipPosition="bottom-right" onClick={(event) => this.removeAWeek(mykey)}>
                     <ContentClear />
                   </IconButton>
                   <SingleWeek id={mykey} onStateChange={this.onChildStateChange}/>
@@ -48,13 +48,13 @@ class FullProgram extends React.Component<Props, State> {
 
   onChildStateChange(childstate: ChildState, id: string){
     this.state.children[id] = childstate
-    this.setState({children: this.state.children}, ()=>
-    console.log(this.state.children))
+    this.setState({children: this.state.children})
   }
 
   addAWeek(){
     let mykey = this.getKey()
-    this.setState({weekList: this.state.weekList.concat(<Tab key={mykey} label={"Week " + (this.state.weekList.length + 1)}><IconButton onClick={(event) => this.removeAWeek(mykey)}>
+    this.setState({weekList: this.state.weekList.concat(<Tab key={mykey} label={"Week " + (this.state.weekList.length + 1)}>
+                                                                  <IconButton tooltip="Remove Week" tooltipPosition="bottom-right" onClick={(event) => this.removeAWeek(mykey)}>
                                                                   <ContentClear /></IconButton><SingleWeek id={mykey} onStateChange={this.onChildStateChange}/></Tab>)})
   }
 
@@ -70,26 +70,24 @@ class FullProgram extends React.Component<Props, State> {
 
     let newWeekList: Array<JSX.Element> = []
     this.setState({weekList: []}, ()=>
-    {for(let x = 0; x < weekListRef.length - 1; x++){
+    {
+      for(let x = 0; x < weekListRef.length - 1; x++){
       if(x < i){
         let mykey = weekListRef[x].props.children[1].props.id
         console.log(mykey)
         newWeekList.push(
-          <Tab key={mykey} label={"Week " + (newWeekList.length + 1)}><IconButton onClick={(event) => this.removeAWeek(mykey)}>
+          <Tab key={mykey} label={"Week " + (newWeekList.length + 1)}><IconButton tooltip="Remove Week" tooltipPosition="bottom-right" onClick={(event) => this.removeAWeek(mykey)}>
                   <ContentClear /></IconButton><SingleWeek id={mykey} onStateChange={this.onChildStateChange} injectedState={this.state.children[mykey]}/></Tab>
         )
       }else if(x >= i){
         let mykey = weekListRef[x + 1].props.children[1].props.id
         console.log(mykey)
         newWeekList.push(
-          <Tab key={mykey} label={"Week " + (newWeekList.length + 1)}><IconButton onClick={(event) => this.removeAWeek(mykey)}>
+          <Tab key={mykey} label={"Week " + (newWeekList.length + 1)}><IconButton tooltip="Remove Week" tooltipPosition="bottom-right" onClick={(event) => this.removeAWeek(mykey)}>
                   <ContentClear /></IconButton><SingleWeek id={mykey} onStateChange={this.onChildStateChange} injectedState={this.state.children[mykey]}/></Tab>
-        )
-      }
-    }})
-
-    this.setState({weekList: newWeekList}, ()=>this.forceUpdate())
-    
+      )}}
+      this.setState({weekList: newWeekList})
+    })
   }
 
   getKey(){

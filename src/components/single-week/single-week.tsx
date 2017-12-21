@@ -65,7 +65,7 @@ class SingleWeek extends React.Component<Props, State> {
         mykey = this.getKey();
         headers.push(<TableHeaderColumn key={headers.length.toString()} columnNumber={headers.length}>
         {this.headerStrings[headers.length]} 
-        <IconButton onClick={(event) => this.removeFromWorkoutList(event, mykey)}>
+        <IconButton tooltip="Remove Day" onClick={(event) => this.removeFromWorkoutList(event, mykey)}>
           <ContentClear />
         </IconButton></TableHeaderColumn>);
         workoutList.push(<TableRowColumn key={mykey} className="tablecolumn">
@@ -75,7 +75,7 @@ class SingleWeek extends React.Component<Props, State> {
       mykey = this.getKey();
       headers.push(<TableHeaderColumn key={headers.length.toString()} columnNumber={headers.length}>
                                                           {this.headerStrings[headers.length]} 
-                                                          <IconButton onClick={(event) => this.removeFromWorkoutList(event, mykey)}>
+                                                          <IconButton tooltip="Remove Day" onClick={(event) => this.removeFromWorkoutList(event, mykey)}>
                                                             <ContentClear />
                                                           </IconButton></TableHeaderColumn>),
       workoutList.push(<TableRowColumn key={mykey} className="tablecolumn">
@@ -93,7 +93,7 @@ class SingleWeek extends React.Component<Props, State> {
     const mykey = this.getKey();
     this.setState({headers: this.state.headers.concat(<TableHeaderColumn key={this.state.headers.length.toString()} columnNumber={this.state.headers.length}>
                                                                 {this.headerStrings[this.state.headers.length]} 
-                                                                <IconButton onClick={(event) => this.removeFromWorkoutList(event, mykey)}>
+                                                                <IconButton tooltip="Remove Day" onClick={(event) => this.removeFromWorkoutList(event, mykey)}>
                                                                   <ContentClear />
                                                                 </IconButton></TableHeaderColumn>),
                            workoutList: this.state.workoutList.concat(<TableRowColumn key={mykey} className="tablecolumn">
