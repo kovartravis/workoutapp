@@ -1,0 +1,24 @@
+.buttons{
+    display: none;
+}
+
+.exercisebutton{
+    display: none;
+}
+
+
+.columnAccordian:hover{
+    background-color: #eeffe8;
+}
+
+.columnAccordian:hover .buttons{
+    display: flex;
+    justify-content: flex-end
+}
+
+.columnAccordian:hover .exercisebutton{
+    height: 7vh;
+    display: flex;
+    align-items: center;
+}
+

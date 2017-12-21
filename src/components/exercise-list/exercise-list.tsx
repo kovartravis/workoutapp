@@ -11,6 +11,7 @@ import IconButton from 'material-ui/IconButton';
 import ContentClear from 'material-ui/svg-icons/content/clear';
 import ArrowUpward from 'material-ui/svg-icons/navigation/arrow-upward'
 import ArrowDownward from 'material-ui/svg-icons/navigation/arrow-downward'
+import './exercise-list.style.css'
 
 interface ExerciseList{
   key: number
@@ -22,7 +23,7 @@ interface State{
 }
 
 interface childState{
-  lift: number;
+  lift: string;
   sets: number;
   reps: number;
   weight: number;
@@ -51,19 +52,25 @@ class ExerciseList extends React.Component<Props, State> {
     if(this.props.injectedState){
       for(let i = 0; i < Object.keys(this.props.injectedState).length; i++){
         mykey = this.getKey()
-        exerciseList.push((<div key={mykey}>
-                                 <IconButton tooltip="Remove Exercise" onClick={(event) => this.removeFromExerciseList(event, mykey)}><ContentClear /></IconButton>
-                                 <IconButton tooltip="Move Up" onClick={(event) => this.moveContentUpward(mykey)}><ArrowUpward /></IconButton>
-                                 <IconButton tooltip="Move Down" onClick={(event) => this.moveContentDownward(mykey)}><ArrowDownward /></IconButton>
-                                 <ExerciseSelector id={mykey} onStateChange={this.onChildStateChange} injectedState={this.props.injectedState[i]}/></div>))
+        exerciseList.push((<div key={mykey} className="exerciseSelectorHolder">
+                              <div className="buttons"> 
+                                <IconButton onClick={(event) => this.removeFromExerciseList(event, mykey)}><ContentClear /></IconButton>
+                                <IconButton onClick={(event) => this.moveContentUpward(mykey)}><ArrowUpward /></IconButton>
+                                <IconButton onClick={(event) => this.moveContentDownward(mykey)}><ArrowDownward /></IconButton>
+                              </div>
+                              <ExerciseSelector id={mykey} onStateChange={this.onChildStateChange} injectedState={this.props.injectedState[i]}/>
+                            </div>))
       }
     }else{
       mykey = this.getKey()
-      exerciseList = [<div key={mykey}>
-                      <IconButton tooltip="Remove Exercise" onClick={(event) => this.removeFromExerciseList(event, mykey)}><ContentClear /></IconButton>
-                      <IconButton tooltip="Move Up" onClick={(event) => this.moveContentUpward(mykey)}><ArrowUpward /></IconButton>
-                      <IconButton tooltip="Move Down" onClick={(event) => this.moveContentDownward(mykey)}><ArrowDownward /></IconButton>
-                      <ExerciseSelector id={mykey} onStateChange={this.onChildStateChange}/></div>]
+      exerciseList = [<div key={mykey} className="exerciseSelectorHolder">
+                        <div className="buttons"> 
+                          <IconButton onClick={(event) => this.removeFromExerciseList(event, mykey)}><ContentClear /></IconButton>
+                          <IconButton onClick={(event) => this.moveContentUpward(mykey)}><ArrowUpward /></IconButton>
+                          <IconButton onClick={(event) => this.moveContentDownward(mykey)}><ArrowDownward /></IconButton>
+                        </div>
+                        <ExerciseSelector id={mykey} onStateChange={this.onChildStateChange}/>
+                      </div>]
     }
 
     this.state = {
@@ -75,11 +82,15 @@ class ExerciseList extends React.Component<Props, State> {
 
   addToExerciseList(){
     let mykey = this.getKey()
-    this.setState({exerciseList: this.state.exerciseList.concat(<div key={mykey}>
-                                                <IconButton tooltip="Remove Exercise" onClick={(event) => this.removeFromExerciseList(event, mykey)}><ContentClear /></IconButton>
-                                                <IconButton tooltip="Move Up" onClick={(event) => this.moveContentUpward(mykey)}><ArrowUpward /></IconButton>
-                                                <IconButton tooltip="Move Down" onClick={(event) => this.moveContentDownward(mykey)}><ArrowDownward /></IconButton>
-                                                <ExerciseSelector id={mykey} onStateChange={this.onChildStateChange}/></div>)})
+    this.setState({exerciseList: this.state.exerciseList.concat(
+                                                <div key={mykey} className="exerciseSelectorHolder">
+                                                  <div className="buttons">
+                                                    <IconButton onClick={(event) => this.removeFromExerciseList(event, mykey)}><ContentClear /></IconButton>
+                                                    <IconButton onClick={(event) => this.moveContentUpward(mykey)}><ArrowUpward /></IconButton>
+                                                    <IconButton onClick={(event) => this.moveContentDownward(mykey)}><ArrowDownward /></IconButton>
+                                                  </div>
+                                                  <ExerciseSelector id={mykey} onStateChange={this.onChildStateChange}/>
+                                                </div>)})
     
   }
 
@@ -144,14 +155,20 @@ class ExerciseList extends React.Component<Props, State> {
     return this.key.toString();
   }
 
+  onHover(row: number, col: number){
+    console.log(row + ' ' + col)
+  }
+
   render() {
     return (
-      <Table selectable={false}>
+      <Table selectable={false} onCellHover={this.onHover}>
         <TableHeader displaySelectAll={false} adjustForCheckbox={false} />
         <TableBody displayRowCheckbox={false}>
-          <TableRowColumn>
+          <TableRowColumn className="columnAccordian">
             {this.state.exerciseList}
-            <FlatButton label="New Exercise" primary={true} onClick={this.addToExerciseList}/>
+            <div className="exercisebutton">
+              <FlatButton label="New Exercise" primary={true} backgroundColor="#e1fccf"onClick={this.addToExerciseList}/>
+            </div>
           </TableRowColumn>
         </TableBody>
       </Table>

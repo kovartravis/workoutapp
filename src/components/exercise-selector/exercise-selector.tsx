@@ -1,12 +1,12 @@
 import * as React from 'react';
 import './exercise-selector.style.css';
-import SelectField from 'material-ui/SelectField'
-import MenuItem from 'material-ui/MenuItem';
+// import SelectField from 'material-ui/SelectField'
+// import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
 import {Card, CardHeader, CardText} from 'material-ui/Card'
 
 interface State {
-    lift: number;
+    lift: string;
     sets: number;
     reps: number;
     weight: number;
@@ -27,7 +27,7 @@ class ExerciseSelector extends React.Component<Props, State> {
         this.state = this.props.injectedState;
     }else{
         this.state = {
-            lift: 0,
+            lift: 'Enter Lift',
             sets: 0,
             reps: 0,
             weight: 0,
@@ -35,8 +35,6 @@ class ExerciseSelector extends React.Component<Props, State> {
         };
     }
 
-
-    this.handleSelectChange = this.handleSelectChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.passInfoUp = this.passInfoUp.bind(this)
 
@@ -47,13 +45,11 @@ class ExerciseSelector extends React.Component<Props, State> {
       return this
   }
 
-  handleSelectChange(event: React.FormEvent<any>, index: number) {
-      this.setState({lift: index}, ()=>
-      this.props.onStateChange(this.state, this.props.id));
-  }
-
   handleInputChange(event: React.FormEvent<any>){
       switch(event.currentTarget.id){
+          case 'lift': this.setState({lift: event.currentTarget.value}, ()=> 
+                       this.props.onStateChange(this.state, this.props.id));
+                       break;
           case 'sets': this.setState({sets: event.currentTarget.value}, ()=> 
                        this.props.onStateChange(this.state, this.props.id));
                        break;
@@ -70,29 +66,16 @@ class ExerciseSelector extends React.Component<Props, State> {
       }
   }
 
-  createTitleString(){
-      switch(this.state.lift){
-          case 0: return 'Squat'
-          case 1: return 'Bench Press'
-          case 2: return 'Deadlift'
-          default: return 'Oh no'
-      }
-  }
-
   createSubtitleString(){
       return this.state.sets + 'x' + this.state.reps + '@' + this.state.weight + 'lbs'
   }
 
   render() {
     return (
-      <Card ref="card">
-        <CardHeader title={this.createTitleString()} subtitle={this.createSubtitleString()} actAsExpander={true} showExpandableButton={true}/>
+      <Card>
+        <CardHeader title={this.state.lift} subtitle={this.createSubtitleString()} actAsExpander={true} showExpandableButton={true}/>
         <CardText expandable={true}>
-          <SelectField floatingLabelText="Lift" value={this.state.lift} onChange={this.handleSelectChange}>
-            <MenuItem value={0} primaryText="Squat"/>
-            <MenuItem value={1} primaryText="Bench Press"/>
-            <MenuItem value={2} primaryText="Deadlift"/>
-          </SelectField><br/>
+            <TextField id="lift" style={{width: 300}} floatingLabelText="Exercise" type="string" onChange={this.handleInputChange} /><br/>
             <TextField id="sets" style={{width: 100}} value={this.state.sets} floatingLabelText="Sets" type="number" onChange={this.handleInputChange} />
             <TextField id="reps" style={{width: 100}} value={this.state.reps} floatingLabelText="Reps" type="number" onChange={this.handleInputChange} />
             <TextField id="weight" style={{width: 100}} value={this.state.weight} floatingLabelText="Weight" type="number" onChange={this.handleInputChange} /><br/>

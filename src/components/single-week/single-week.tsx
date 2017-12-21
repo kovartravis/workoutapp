@@ -25,7 +25,7 @@ interface State{
 }
 
 interface selectorState{
-  lift: number;
+  lift: string;
   sets: number;
   reps: number;
   weight: number;
